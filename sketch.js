@@ -5,8 +5,11 @@ const Constraint = Matter.Constraint;
 
 var engine, world;
 var score = 0;
+var bg = "day.jpg";
+var backg;
 
 function preload() {
+    getBackgroundImg();
 }
 
 
@@ -47,14 +50,15 @@ function setup(){
 
     box19 = new Box(590,75,30,40);
 
-    stone = new Stone(100,300,30,30);
+    stone = new Stone(95,280,30,30);
     slingshot = new SlingShot(stone.body,{x:100, y:300});
 }
 
 
 function draw(){
-background("black");
-
+    if(backg){
+        background(backg);
+    }
     Engine.update(engine);
     //strokeWeight(4);
     box1.display();
@@ -104,7 +108,7 @@ background("black");
     box19.Score();
 
     fill("white");
-    text("score: "+ score,750,40);
+    text("score: "+ score,150,40);
 }
 
 function mouseDragged(){
@@ -123,18 +127,19 @@ function keyPressed(){
 }
 
 async function getBackgroundImg(){
-    var response = await fetch("http://worldclockapi.com/api/json/est/now");
-    var responseJSON = await response.json();
 
-    var datetime = responseJSON.datetime;
-    var hour = datetime.slice(11,13);
-    
-    if(hour>=0600 && hour<=1800){
-        background("yellow");
+    var response = await fetch("http://worldtimeapi.org/api/timezone/est");
+    var responseJSON = await response.json();
+console.log(responseJSON);
+    var dt = responseJSON.datetime;
+    var hour = dt.slice(11,13);
+    console.log(hour);
+    if(hour>=06 && hour<=18){
+        bg = "day.jpg";
     }
     else{
-        background("black");
+        bg = "night.jpeg";
     }
 
-    
+   backg = loadImage(bg); 
 }

@@ -37,8 +37,8 @@ class Box {
   }
 
   Score(){
-    if(this.Visiblity<0 && this.Visibility>=105){
-      score = score + 1;
+    if(this.Visiblity<0 && this.Visiblity>-105){
+    score ++;
     }
   }
 };
